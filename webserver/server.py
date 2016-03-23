@@ -63,13 +63,125 @@ engine = create_engine(DATABASEURI)
 #
 engine.execute("""DROP TABLE IF EXISTS test;""")
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
-  id serial,
-  name text
-);""")
+    id serial,
+    name text
+    );""")
 engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
+
+#engine.execute("""DROP TABLE IF EXISTS Person;""")
+#engine.execute("""CREATE TABLE IF NOT EXISTS Person(
+#    user_id INT PRIMARY KEY,
+#    user_name CHAR(100),
+#    grad_date DATE,
+#    major_name CHAR(100)
+#    );""")
+#engine.execute("""INSERT INTO test VALUES (1,Jorge,05 Dec 2016,Computer Science);""")
+
+
+#engine.execute("""DROP TABLE IF EXISTS University;""")
+#engine.execute("""create TABLE University(
+#    univ_id int,
+#    univ_name text,
+#    Primary key(univ_id)
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Courses;""")
+#engine.execute("""create TABLE Courses(
+#    course_id int,
+#    course_name text,
+#    course_description text,
+#    Primary key(course_id)
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Enrollment;""")
+#engine.execute("""create TABLE Enrollment(
+#    univ_id int,
+#    user_id int,
+#    course_id int,
+#    Primary key(user_id, univ_id, course_id),
+#    Foreign key(user_id) references Person ON DELETE CASCADE,
+#    Foreign key(univ_id) references University ON DELETE CASCADE,
+#    Foreign key(course_id) references Courses ON DELETE CASCADE
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Company;""")
+#engine.execute("""create TABLE Company(
+#    company_id int,
+#    company_name text,
+#    Primary key(company_id)
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Jobs;""")
+#engine.execute("""create TABLE Jobs(
+#    job_id int,
+#    job_name text,
+#    job_type int,
+#    job_description text,
+#    Primary key(job_id)
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Employed;""")
+#engine.execute("""create Table Employed(
+#    user_id int,
+#    company_id int,
+#    job_id int,
+#    Primary key(user_id),
+#    Foreign key(user_id) references Person ON DELETE CASCADE,
+#    Foreign key(company_id) references Company ON DELETE CASCADE,
+#    Foreign key(job_id) references Jobs ON DELETE CASCADE
+#    );""")
+#
+#
+#
+#engine.execute("""DROP TABLE IF EXISTS Skills;""")
+#engine.execute("""create Table Skills(
+#    skill_id int,
+#    skill_name text,
+#    Primary key(skill_id)
+#
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Vacant;""")
+#engine.execute("""create Table Vacant(
+#    job_id int,
+#    company_id int,
+#    Primary key(job_id, company_id),
+#    Foreign key(job_id) references Jobs ON DELETE CASCADE,
+#    Foreign key(company_id) references Company ON DELETE CASCADE
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Possesses;""")
+#engine.execute("""create Table Possesses(
+#    skill_id int,
+#    user_id int,
+#    endorsements int,
+#    skill_level text,
+#    Primary key(skill_id, user_id),
+#    Foreign key(skill_id) references Skills ON DELETE CASCADE,
+#    Foreign key(user_id) references Person ON DELETE CASCADE
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Endorses;""")
+#engine.execute("""create table Endorses(
+#    user_id_src int,
+#    user_id_dest int,
+#    skill_id int,
+#    Primary Key(skill_id, user_id_src, user_id_dest),
+#    Foreign key(skill_id) references Skills ON DELETE CASCADE,
+#    Foreign key(user_id_src) references Person(user_id) ON DELETE CASCADE,
+#    Foreign Key(user_id_src) references Person(user_id) ON DELETE CASCADE
+#    );""")
+#
+#engine.execute("""DROP TABLE IF EXISTS Requires;""")
+#engine.execute("""create Table Requires(
+#    job_id int,
+#    skill_id int,
+#    Primary Key(job_id, skill_id),
+#    Foreign Key(job_id) references Jobs ON DELETE CASCADE,
+#    Foreign Key(skill_id) references Skills ON DELETE CASCADE
+#    );""")
 #
 # END SQLITE SETUP CODE
-#
 
 
 
