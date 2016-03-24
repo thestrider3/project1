@@ -217,159 +217,180 @@ enrollment_values = [('1','3','4777'),
 for ev in enrollment_values:
     engine.execute("INSERT INTO Enrollment (univ_id, user_id,course_id) VALUES (%s,%s,%s)",ev)
 
-#engine.execute("""DROP TABLE IF EXISTS Vacant;""")
-#engine.execute("""create Table Vacant(
-#    job_id int,
-#    company_id int,
-#    Primary key(job_id, company_id),
-#    Foreign key(job_id) references Jobs ON DELETE CASCADE,
-#    Foreign key(company_id) references Company ON DELETE CASCADE
-#    );""")
+engine.execute("""DROP TABLE IF EXISTS Jobs CASCADE;""")
+engine.execute("""create TABLE Jobs(
+    job_id int,
+    job_name text,
+    job_type text,
+    job_description text,
+    Primary key(job_id)
+    );""")
 
-#3,4
-#5,6
-#7,7
-#8,3
-#1,1
-#2,2
-#3,3
-#4,1
-#4,5
-#5,3
-#5,5
-#10,1
+jobs_values = [('1','Programmer','Intern','Program writter'),
+               ('2','Elecrical Engineering','Full Time','Device Physics Designer'),
+               ('3','Web Developer','Part Time','Web development and interface'),
+               ('4','Bussiness Rep','Full Time','Create relationships'),
+               ('5','CEO','Full Time','Run company'),
+               ('6','Statistician Marker','Intern','Analysis of Market data'),
+               ('7','DC Engineer','Full Time','DC designer'),
+               ('8','Android Developer','Part Time','mobile OS app developmer'),
+               ('9','Window Security Staff','Part Time','encryption'),
+               ('10','Secretary','Part Time','help!')]
 
-#engine.execute("""DROP TABLE IF EXISTS Possesses;""")
-#engine.execute("""create Table Possesses(
-#    skill_id int,
-#    user_id int,
-#    endorsements int,
-#    skill_level text,
-#    Primary key(skill_id, user_id),
-#    Foreign key(skill_id) references Skills ON DELETE CASCADE,
-#    Foreign key(user_id) references Person ON DELETE CASCADE
-#    );""")
+for jv in jobs_values:
+    engine.execute("INSERT INTO Jobs (job_id, job_name,job_type,job_description) VALUES (%s,%s,%s,%s)",jv)
 
-#1,3,2,Proficient
-#2,4,1,Advanced
-#4,2,5,Intermediate
-#3,2,3,Proficient
-#5,2,1,Advanced
-#6,2,3,Proficient
-#1,1,3,Basic
-#2,1,4,Intermediate
-#5,1,3,Proficient
-#6,10,3,Proficient
-#5,3,4,Advanced
+engine.execute("""DROP TABLE IF EXISTS Vacant CASCADE;""")
+engine.execute("""create Table Vacant(
+    job_id int,
+    company_id int,
+    Primary key(job_id, company_id),
+    Foreign key(job_id) references Jobs ON DELETE CASCADE,
+    Foreign key(company_id) references Company ON DELETE CASCADE
+    );""")
 
-#engine.execute("""DROP TABLE IF EXISTS Endorses;""")
-#engine.execute("""create table Endorses(
-#    user_id_src int,
-#    user_id_dest int,
-#    skill_id int,
-#    Primary Key(skill_id, user_id_src, user_id_dest),
-#    Foreign key(skill_id) references Skills ON DELETE CASCADE,
-#    Foreign key(user_id_src) references Person(user_id) ON DELETE CASCADE,
-#    Foreign Key(user_id_src) references Person(user_id) ON DELETE CASCADE
-#    );""")
+vacant_values = [ ('3','4'),
+                  ('5','6'),
+                  ('7','7'),
+                  ('8','3'),
+                  ('1','1'),
+                  ('2','2'),
+                  ('3','3'),
+                  ('4','1'),
+                  ('4','5'),
+                  ('5','3'),
+                  ('5','5'),
+                  ('10','1')]
 
-#2,3,1
-#4,3,1
-#5,3,5
-#6,3,5
-#7,3,5
-#9,3,5
-#4,1,1
-#3,1,1
-#2,1,1
-#6,1,2
-#7,1,2
-#3,1,2
-#2,1,2
-#5,1,5
-#2,1,5
-#9,1,5
-#7,10,6
-#8,10,6
-#3,10,6
-#2,4,2
-#4,2,4
-#3,2,4
-#7,2,4
-#8,2,4
-#10,2,4
-#7,2,3
-#8,2,3
-#1,2,3
-#3,2,5
-#10,2,6
-#9,2,6
-#8,2,6
+for vv in vacant_values:
+    engine.execute("INSERT INTO Vacant (job_id, company_id) VALUES (%s,%s)",vv)
 
-#engine.execute("""DROP TABLE IF EXISTS Requires;""")
-#engine.execute("""create Table Requires(
-#    job_id int,
-#    skill_id int,
-#    Primary Key(job_id, skill_id),
-#    Foreign Key(job_id) references Jobs ON DELETE CASCADE,
-#    Foreign Key(skill_id) references Skills ON DELETE CASCADE
-#    );""")
 
-#2,4
-#4,4
-#2,3
-#6,7
-#4,5
-#1,2
-#1,3
-#5,5
-#7,8
-#2,8
-#9,1
-#10,1
-#10,2
-#10,3
-#10,4
+engine.execute("""DROP TABLE IF EXISTS Possesses CASCADE;""")
+engine.execute("""create Table Possesses(
+    skill_id int,
+    user_id int,
+    endorsements int,
+    skill_level text,
+    Primary key(skill_id, user_id),
+    Foreign key(skill_id) references Skills ON DELETE CASCADE,
+    Foreign key(user_id) references Person ON DELETE CASCADE
+    );""")
 
-#engine.execute("""DROP TABLE IF EXISTS Jobs;""")
-#engine.execute("""create TABLE Jobs(
-#    job_id int,
-#    job_name text,
-#    job_type int,
-#    job_description text,
-#    Primary key(job_id)
-#    );""")
+possesses_values = [('1','3','2','Proficient'),
+                    ('2','4','1','Advanced'),
+                    ('4','2','5','Intermediate'),
+                    ('3','2','3','Proficient'),
+                    ('5','2','1','Advanced'),
+                    ('6','2','3','Proficient'),
+                    ('1','1','3','Basic'),
+                    ('2','1','4','Intermediate'),
+                    ('5','1','3','Proficient'),
+                    ('6','10','3','Proficient'),
+                    ('5','3','4','Advanced')]
 
-#1, Programmer, Intern, Program writter
-#2, Elecrical Engineering, Full Time, Device Physics Designer
-#3, Web Developer, Part Time, Web development and interface
-#4, Bussiness Rep, Full Time, Create relationships
-#5, CEO, Full Time, Run company
-#6, Statistician Marker, Intern, Analysis of Market data
-#7, DC Engineer, Full Time, DC designer
-#8, Android Developer, Part Time, mobile OS app developmer
-#9, Window Security Staff, Part Time, encryption
-#10, Secretary, Part Time, help!
+for pv in possesses_values:
+    engine.execute("INSERT INTO Possesses (skill_id, user_id, endorsements, skill_level) VALUES (%s,%s,%s,%s)",pv)
 
-#engine.execute("""DROP TABLE IF EXISTS Employed;""")
-#engine.execute("""create Table Employed(
-#    user_id int,
-#    company_id int,
-#    job_id int,
-#    Primary key(user_id),
-#    Foreign key(user_id) references Person ON DELETE CASCADE,
-#    Foreign key(company_id) references Company ON DELETE CASCADE,
-#    Foreign key(job_id) references Jobs ON DELETE CASCADE
-#    );""")
+engine.execute("""DROP TABLE IF EXISTS Endorses CASCADE;""")
+engine.execute("""create table Endorses(
+    user_id_src int,
+    user_id_dest int,
+    skill_id int,
+    Primary Key(skill_id, user_id_src, user_id_dest),
+    Foreign key(skill_id) references Skills ON DELETE CASCADE,
+    Foreign key(user_id_src) references Person(user_id) ON DELETE CASCADE,
+    Foreign Key(user_id_src) references Person(user_id) ON DELETE CASCADE
+    );""")
 
-#8,9,2
-#6,4,8
-#5,7,4
-#3,4,7
-#10,10,8
-#9,8,9
-#1,5,7
-#2,4,2
+endorses_values = [('2','3','1'),
+                   ('4','3','1'),
+                   ('5','3','5'),
+                   ('6','3','5'),
+                   ('7','3','5'),
+                   ('9','3','5'),
+                   ('4','1','1'),
+                   ('3','1','1'),
+                   ('2','1','1'),
+                   ('6','1','2'),
+                   ('7','1','2'),
+                   ('3','1','2'),
+                   ('2','1','2'),
+                   ('5','1','5'),
+                   ('2','1','5'),
+                   ('9','1','5'),
+                   ('7','10','6'),
+                   ('8','10','6'),
+                   ('3','10','6'),
+                   ('2','4','2'),
+                   ('4','2','4'),
+                   ('3','2','4'),
+                   ('7','2','4'),
+                   ('8','2','4'),
+                   ('10','2','4'),
+                   ('7','2','3'),
+                   ('8','2','3'),
+                   ('1','2','3'),
+                   ('3','2','5'),
+                   ('10','2','6'),
+                   ('9','2','6'),
+                   ('8','2','6')]
+
+for ev in endorses_values:
+    engine.execute("INSERT INTO Endorses (user_id_src, user_id_dest,skill_id) VALUES (%s,%s,%s)",ev)
+
+engine.execute("""DROP TABLE IF EXISTS Requires CASCADE;""")
+engine.execute("""create Table Requires(
+    job_id int,
+    skill_id int,
+    Primary Key(job_id, skill_id),
+    Foreign Key(job_id) references Jobs ON DELETE CASCADE,
+    Foreign Key(skill_id) references Skills ON DELETE CASCADE
+    );""")
+
+requires_values = [('2','4'),
+                   ('4','4'),
+                   ('2','3'),
+                   ('6','7'),
+                   ('4','5'),
+                   ('1','2'),
+                   ('1','3'),
+                   ('5','5'),
+                   ('7','8'),
+                   ('2','8'),
+                   ('9','1'),
+                   ('10','1'),
+                   ('10','2'),
+                   ('10','3'),
+                   ('10','4')]
+for rv in requires_values:
+    engine.execute("INSERT INTO Requires (job_id, skill_id) VALUES (%s,%s)",rv)
+
+
+engine.execute("""DROP TABLE IF EXISTS Employed CASCADE;""")
+engine.execute("""create Table Employed(
+    user_id int,
+    company_id int,
+    job_id int,
+    Primary key(user_id),
+    Foreign key(user_id) references Person ON DELETE CASCADE,
+    Foreign key(company_id) references Company ON DELETE CASCADE,
+    Foreign key(job_id) references Jobs ON DELETE CASCADE
+    );""")
+
+employed_values = [('8','9','2'),
+                   ('6','4','8'),
+                   ('5','7','4'),
+                   ('3','4','7'),
+                   ('10','10','8'),
+                   ('9','8','9'),
+                   ('1','5','7'),
+                   ('2','4','2')]
+
+for ev in employed_values:
+    engine.execute("INSERT INTO Employed (user_id, company_id, job_id) VALUES (%s,%s, %s)",ev)
+
+
 
 
 
