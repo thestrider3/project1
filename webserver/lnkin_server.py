@@ -1,19 +1,19 @@
 #!/usr/bin/env python2.7
 
 """
-    Columbia W4111 Intro to databases
-    Example webserver
+Columbia W4111 Intro to databases
+Example webserver
     
-    To run locally
+To run locally
+
+python server.py
     
-    python server.py
-    
-    Go to http://localhost:8111 in your browser
+Go to http://localhost:8111 in your browser
     
     
-    A debugger such as "pdb" may be helpful for debugging.
-    Read about it online.
-    """
+A debugger such as "pdb" may be helpful for debugging.
+Read about it online.
+"""
 
 import os
 from sqlalchemy import *
@@ -22,6 +22,9 @@ from flask import Flask, request, render_template, g, redirect, Response
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
+
+DATABASEURI = "postgresql://jjg2188:GMRLGC@w4111db.eastus.cloudapp.azure.com/jjg2188"
+engine = create_engine(DATABASEURI)
 
 @app.before_request
 def before_request():
@@ -50,9 +53,6 @@ def teardown_request(exception):
     except Exception as e:
         pass
 
-
-DATABASEURI = "postgresql://jjg2188:GMRLGC@w4111db.eastus.cloudapp.azure.com/jjg2188"
-engine = create_engine(DATABASEURI)
 
 engine.execute("""DROP TABLE IF EXISTS Person CASCADE;""")
 engine.execute("""CREATE TABLE IF NOT EXISTS Person(
@@ -381,12 +381,23 @@ def index():
     #    print request.args
     
     #   query
-    cursor = g.conn.execute("SELECT * FROM Person")
+    cursor = g.conn.execute("SELECT user_name FROM Person")
     output = list()
     for result in cursor:
         output.append(result)  # can also be accessed using result[0]
     cursor.close()
-    return render_template("index.html", output=output)
+
+
+#    cursor = g.conn.execute("SELECT University.univ_id, University.univ_name, COUNT(*) maximum FROM University INNER JOIN Enrollment ON Enrollment.univ_id = University.univ_id GROUP BY University.univ_id ORDER BY maximum DESC LIMIT 1;")
+
+    cursor = g.conn.execute("SELECT Person.user_name FROM Person WHERE Person.user_id IN (Select Enrollment.user_id FROM Enrollment WHERE univ_id = 2 and course_id = 4777);")
+
+#    cursor = g.conn.execute("SELECT Jobs.job_id, Jobs.job_name FROM Jobs WHERE job_id IN (SELECT Vacant.job_id FROM Vacant, Requires WHERE Vacant.job_id = Requires.job_id and (skill_id = 1 or skill_id =2));")
+
+    
+    record = cursor.fetchone()
+    cursor.close()
+    return render_template("index.html", output=record)
 
 
 if __name__ == "__main__":
