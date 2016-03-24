@@ -50,26 +50,6 @@ def teardown_request(exception):
     except Exception as e:
         pass
 
-@app.route('/')
-def index():
-    
-#    # DEBUG: this is debugging code to see what request looks like
-#    print request.method
-#    print request.form
-#    print request.args
-
-#   query
-    cursor = g.conn.execute("SELECT * FROM Person")
-    output = list()
-    for result in cursor:
-        output.append(result)  # can also be accessed using result[0]
-    cursor.close()
-    return render_template("index.html", output=output)
-
-
-
-
-
 
 DATABASEURI = "postgresql://jjg2188:GMRLGC@w4111db.eastus.cloudapp.azure.com/jjg2188"
 engine = create_engine(DATABASEURI)
@@ -392,6 +372,21 @@ for ev in employed_values:
 
 
 
+@app.route('/')
+def index():
+    
+    #    # DEBUG: this is debugging code to see what request looks like
+    #    print request.method
+    #    print request.form
+    #    print request.args
+    
+    #   query
+    cursor = g.conn.execute("SELECT * FROM Person")
+    output = list()
+    for result in cursor:
+        output.append(result)  # can also be accessed using result[0]
+    cursor.close()
+    return render_template("index.html", output=output)
 
 
 if __name__ == "__main__":
