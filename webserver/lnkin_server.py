@@ -473,13 +473,33 @@ def getJobs():
     for result in cursor:
         company_list.append(result)
     
-    jobs_list = list()
+    vacant_jobs_list = list()
+    employed_jobs_list = list()
     if request.method == 'POST':
         compid = (request.form['company'])
-        cursor = g.conn.execute('SELECT Jobs.job_name, Jobs.job_type FROM Jobs WHERE job_id IN (SELECT Vacant.job_id FROM Vacant WHERE Vacant.company_id = %s',compid)
+        print 'compid: {}'.format(compid)
+        cursor = g.conn.execute('SELECT Jobs.job_name, Jobs.job_type, Jobs.job_description FROM Jobs WHERE job_id IN (SELECT Vacant.job_id FROM Vacant WHERE Vacant.company_id = %s);',compid)
         for result in cursor:
-            courses_list.append(str(result[0]))
-        return render_template("company.html", output=company_list, jobs=jobs_list)
+            converted_string = list()
+            for r in result:
+                converted_string.append(str(r))
+            converted_string.append('Vacant')
+            vacant_jobs_list.append(converted_string)
+
+        print 'vacant_jobs:'
+        print vacant_jobs_list
+        
+        cursor = g.conn.execute('SELECT Jobs.job_name, Jobs.job_type, Jobs.job_description FROM Jobs WHERE job_id IN (SELECT Employed.job_id FROM Employed WHERE Employed.company_id = %s);',compid)
+        for result in cursor:
+            converted_string = list()
+            for r in result:
+                converted_string.append(str(r))
+                converted_string.append('Vacant')
+                employed_jobs_list.append(converted_string)
+
+        job_list = employed_jobs_list + vacant_jobs_list
+        
+        return render_template("company.html", output=company_list, jobs=vacant_jobs_list)
     else: return render_template("error.html")
 
 if __name__ == "__main__":
