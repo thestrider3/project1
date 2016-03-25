@@ -1,19 +1,19 @@
 #!/usr/bin/env python2.7
 
 """
-Columbia W4111 Intro to databases
-Example webserver
+    Columbia W4111 Intro to databases
+    Example webserver
     
-To run locally
-
-python server.py
+    To run locally
     
-Go to http://localhost:8111 in your browser
+    python server.py
+    
+    Go to http://localhost:8111 in your browser
     
     
-A debugger such as "pdb" may be helpful for debugging.
-Read about it online.
-"""
+    A debugger such as "pdb" may be helpful for debugging.
+    Read about it online.
+    """
 
 import os
 from sqlalchemy import *
@@ -30,12 +30,12 @@ engine = create_engine(DATABASEURI)
 @app.before_request
 def before_request():
     """
-    This function is run at the beginning of every web request
-    (every time you enter an address in the web browser).
-    We use it to setup a database connection that can be used throughout the request
+        This function is run at the beginning of every web request
+        (every time you enter an address in the web browser).
+        We use it to setup a database connection that can be used throughout the request
         
-    The variable g is globally accessible
-    """
+        The variable g is globally accessible
+        """
     try:
         g.conn = engine.connect()
     except:
@@ -46,9 +46,9 @@ def before_request():
 @app.teardown_request
 def teardown_request(exception):
     """
-    At the end of the web request, this makes sure to close the database connection.
-    If you don't the database could run out of memory!
-    """
+        At the end of the web request, this makes sure to close the database connection.
+        If you don't the database could run out of memory!
+        """
     try:
         g.conn.close()
     except Exception as e:
@@ -101,7 +101,7 @@ def teardown_request(exception):
 #engine.execute("""create TABLE Company(
 #    company_id int,
 #    company_name text,
-#    Primary key(company_id)
+#    Pripany_id)
 #    );""")
 #
 #company_values = [('1', 'Intel Co.'),
@@ -112,8 +112,8 @@ def teardown_request(exception):
 #                     ('6', 'SpaceX'),
 #                     ('7', 'Tesla'),
 #                     ('8', 'Twitter'),
-#                     ('9', 'Stanford University'),
-#                     ('10', 'Carnegie Mellon University')]
+#                     ('9', 'IBM'),
+#                     ('10', 'Goldman Sach')]
 #for cv in company_values:
 #    engine.execute("INSERT INTO Company (company_id, company_name) VALUES (%s,%s)",cv)
 #
@@ -383,7 +383,7 @@ def index():
     record=list()
     return render_template("index.html", output=record)
 
-    #   query
+#   query
 #    cursor = g.conn.execute("SELECT user_name FROM Person")
 #    output = list()
 #    for result in cursor:
@@ -399,7 +399,7 @@ def index():
 #
 #    cursor = g.conn.execute("SELECT * FROM Person WHERE Person.user_id IN (Select Enrollment.user_id FROM Enrollment WHERE univ_id = 2 and course_id = 4777);")
 #
-#    
+#
 #    record = cursor.fetchone()
 #    cursor.close()
 #    return render_template("index.html", output=record)
@@ -408,9 +408,9 @@ def index():
 @app.route('/search', methods=['POST'])
 def search():
     userid = request.form['user_id']
-#    cursor = g.conn.execute('SELECT * FROM Person WHERE Person.user_id = %s', userid)
+    #    cursor = g.conn.execute('SELECT * FROM Person WHERE Person.user_id = %s', userid)
     cursor = g.conn.execute('SELECT * FROM Person')
-#    cursor = g.conn.execute("SELECT * FROM Person,University,Course,Job INNER JOIN Enrollment ON Enrollment.univ_id = University.univ_id")
+    #    cursor = g.conn.execute("SELECT * FROM Person,University,Course,Job INNER JOIN Enrollment ON Enrollment.univ_id = University.univ_id")
     userid_list = list()
     cursor_list = list()
     for result in cursor:
@@ -464,9 +464,27 @@ def company():
         companyname_list.append(result)
     return render_template("company.html", output=companyname_list)
 
+@app.route('/getJobs',methods=['GET','POST'])
+def getJobs():
+    
+    cursor = g.conn.execute('SELECT * FROM Company')
+    company_list = list()
+    company_list.append([-1,'Select Company'])
+    for result in cursor:
+        company_list.append(result)
+    
+    jobs_list = list()
+    if request.method == 'POST':
+        compid = (request.form['company'])
+        cursor = g.conn.execute('SELECT Jobs.job_name, Jobs.job_type FROM Jobs WHERE job_id IN (SELECT Vacant.job_id FROM Vacant WHERE Vacant.company_id = %s',compid)
+        for result in cursor:
+            courses_list.append(str(result[0]))
+        return render_template("company.html", output=company_list, jobs=jobs_list)
+    else: return render_template("error.html")
+
 if __name__ == "__main__":
     import click
-        
+    
     @click.command()
     @click.option('--debug', is_flag=True)
     @click.option('--threaded', is_flag=True)
@@ -474,22 +492,20 @@ if __name__ == "__main__":
     @click.argument('PORT', default=8111, type=int)
     def run(debug, threaded, host, port):
         """
-        This function handles command line parameters.
-        Run the server using
+            This function handles command line parameters.
+            Run the server using
+            
+            python server.py
+            
+            Show the help text using
+            
+            python server.py --help
+            
+            """
         
-        python server.py
-                                    
-        Show the help text using
-                                    
-        python server.py --help
-        
-        """
-                                        
         HOST, PORT = host, port
         print "running on %s:%d" % (HOST, PORT)
         app.run(host=HOST, port=PORT, debug=debug, threaded=threaded)
-                                                    
-                                                    
+    
+    
     run()
-
-
