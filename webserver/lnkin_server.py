@@ -408,33 +408,46 @@ def index():
 def submit():
     userid = request.form['user_id']
     print 'userid : {}'.format(userid)
-    #    cursor = g.conn.execute('SELECT * FROM Person WHERE Person.user_id = %s', userid)
     cursor = g.conn.execute('SELECT * FROM Person')
-    #    cursor = g.conn.execute("SELECT * FROM Person,University,Course,Job INNER JOIN Enrollment ON Enrollment.univ_id = University.univ_id")
     userid_list = list()
-    cursor_list = list()
+    person_list = list()
     for result in cursor:
-        cursor_list.append(result)
+        person_list.append(result)
         userid_list.append(result[0])
     cursor.close()
 
+    user_list = list()
+    cursor = g.conn.execute('SELECT * FROM Person where Person.user_id=%s',userid)
+    person_list = list()
+    for person in cursor:
+        for p in person:
+            user_list.append(str(p))
+    cursor.close()
 
-#    cursor = g.conn('Select S.skill_name, S.skill_level from Skills S where S.skill_id=(select Ps.skill_id from Possesses Ps where Ps.user_id=%s)',userid)
-#    skill_list = list()
-#    for skill in cursor:
-#        print 'skill'.format(skill)
-#        skill_list.append(skill)
+    cursor = g.conn.execute('select c.company_name from company c where c.company_id=(select e.company_id from Employed e where user_id=%s)',userid)
+    company = cursor.fetchone()[0]
+    user_list.append(company)
+    cursor.close()
+    
+    cursor = g.conn.execute('Select J.job_name , J.job_type from Jobs J where J.job_id =(select E.job_id from Employed E where E.user_id=%s)',userid)
+    jobinfo = cursor.fetchone()
+    user_list.append(jobinfo[0])
+    user_list.append(jobinfo[1])
+    cursor.close()
+
+    cursor = g.conn.execute('Select S.skill_name from Skills S where S.skill_id IN (select Ps.skill_id from Possesses Ps where Ps.user_id=%s)',userid)
+    skill_list = list()
+    for skill in cursor:
+        skill_list.append(skill)
+    cursor.close()
+    print skill_list
 
     
 
     userid = int(userid)
-    print 'userid: {}'.format(userid)
-    print 'useridtype: {}'.format(type(userid))
-    print 'useridlist: {}'.format(userid_list)
     if userid in userid_list:
-        record = cursor_list[0]
-        print 'record: {}'.format(record)
-        return render_template("search.html", output=record)
+        print 'user list: {}'.format(user_list)
+        return render_template("search.html", output=user_list)
     else:
         return render_template("error.html")
 
