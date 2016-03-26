@@ -404,9 +404,10 @@ def index():
 #    return render_template("index.html", output=record)
 
 # Example of adding new data to the database
-@app.route('/search', methods=['POST'])
-def search():
+@app.route('/', methods=['POST'])
+def submit():
     userid = request.form['user_id']
+    print 'userid : {}'.format(userid)
     #    cursor = g.conn.execute('SELECT * FROM Person WHERE Person.user_id = %s', userid)
     cursor = g.conn.execute('SELECT * FROM Person')
     #    cursor = g.conn.execute("SELECT * FROM Person,University,Course,Job INNER JOIN Enrollment ON Enrollment.univ_id = University.univ_id")
@@ -415,7 +416,17 @@ def search():
     for result in cursor:
         cursor_list.append(result)
         userid_list.append(result[0])
+    cursor.close()
+
+
+#    cursor = g.conn('Select S.skill_name, S.skill_level from Skills S where S.skill_id=(select Ps.skill_id from Possesses Ps where Ps.user_id=%s)',userid)
+#    skill_list = list()
+#    for skill in cursor:
+#        print 'skill'.format(skill)
+#        skill_list.append(skill)
+
     
+
     userid = int(userid)
     print 'userid: {}'.format(userid)
     print 'useridtype: {}'.format(type(userid))
