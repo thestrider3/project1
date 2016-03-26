@@ -17,10 +17,16 @@
     <div>Name:{{output[1]}}</div><br>
     <div>Graduation Date:{{output[2]}}</div><br>
     <div>Major:{{output[3]}}</div><br>
-    <div>Company:{{output[3]}}</div><br>
-    <div>Job:{{output[3]}}</div><br>
-    <div>Job Type:{{output[3]}}</div><br>
-    <div>Skills:{{output[3]}}</div><br>
+    <div>Company:{{output[4]}}</div><br>
+    <div>Job:{{output[5]}}</div><br>
+    <div>Job Type:{{output[6]}}</div><br>
+    <h5>Skills</h5>
+    <div>
+    {% for n in skills %}
+    <div>{{n}}</div>
+    {% endfor %}
+  </div>
+
   
   </div>
 
