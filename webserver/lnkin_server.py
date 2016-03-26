@@ -438,7 +438,9 @@ def submit():
     cursor = g.conn.execute('Select S.skill_name from Skills S where S.skill_id IN (select Ps.skill_id from Possesses Ps where Ps.user_id=%s)',userid)
     skill_list = list()
     for skill in cursor:
-        skill_list.append(skill)
+        for s in skill:
+            skill_list.append(str(s))
+#        user_list.append(skill)
     cursor.close()
     print skill_list
 
@@ -447,7 +449,8 @@ def submit():
     userid = int(userid)
     if userid in userid_list:
         print 'user list: {}'.format(user_list)
-        return render_template("search.html", output=user_list)
+        return render_template("search.html", output=user_list, skills=skill_list)
+#        return render_template("search.html", output=user_list)
     else:
         return render_template("error.html")
 
