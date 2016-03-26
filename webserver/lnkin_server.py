@@ -24,7 +24,6 @@ tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
 DATABASEURI = "postgresql://jjg2188:GMRLGC@w4111db.eastus.cloudapp.azure.com/jjg2188"
-#DATABASEURI = 'postgresql+psycopg2://databaseuser:P@ssw0rd@localhost/the_database'
 engine = create_engine(DATABASEURI)
 
 @app.before_request
@@ -101,7 +100,7 @@ def teardown_request(exception):
 #engine.execute("""create TABLE Company(
 #    company_id int,
 #    company_name text,
-#    Pripany_id)
+#    Primary key(company_id)
 #    );""")
 #
 #company_values = [('1', 'Intel Co.'),
