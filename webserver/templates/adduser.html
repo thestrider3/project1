@@ -16,22 +16,26 @@
 Add New Individual
 </p>  
 </br>
-<!-- <form method="POST" action="/newRecord"> -->
+<form method="POST" action="/newRecord">
 <p>Enter your name: </br>
 <input type="text" name="user_name"></br>
+</br>
 Enter your Graduation date:</br> 
 <input type="text" name="grad_date"></br>
+</br>
 Enter your Major: </br>
 <input type="text" name="major_name"></br>
+</br>
 Enter your University: </br>
 <select name="univ">
 {% for out in university %}
     <option value="{{ out[0]}}">{{ out[1]}}</option>
 {% endfor %}
 </select></br>
+</br>
 Select your courses:</br>
 {% for out in courses %}
-  <input type="checkbox" name="courses" value="{{ out[0]}}"> {{ out}}<br>
+  <input type="checkbox" name="courses" value="{{ out}}"> {{ out}}<br>
   {% endfor %}
   </br>
 Enter your Company: </br>
@@ -40,21 +44,24 @@ Enter your Company: </br>
     <option value="{{ out[0]}}">{{ out[1]}}</option>
 {% endfor %}
 </select></br>
+</br>
 Enter your Job: </br>
 <select name="job">
 {% for out in jobs %}
     <option value="{{ out[0]}}">{{ out[1]}}</option>
 {% endfor %}
 </select> </br>
+</br>
 Enter your Job Type: </br>
 <select name="job_type">
 {% for out in job_type %}
     <option value="{{ out[0]}}">{{ out[1]}}</option>
 {% endfor %}
 </select> </br>
+</br>
 Select your skills:</br>
 {% for out in skills %}
-  <input type="checkbox" name="skill" value="{{ out[0]}}"> {{ out}}<br>
+  <input type="checkbox" name="skills" value="{{ out}}"> {{ out}}<br>
   {% endfor %}
 </br>
 <input type="submit" value="Submit"></p>

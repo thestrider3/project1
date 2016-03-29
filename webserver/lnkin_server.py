@@ -582,48 +582,100 @@ def adduser():
 @app.route('/newRecord', methods=['GET','POST'])
 def newRecord():
     info = list()
-    info.append(request.form['user_name'])
-    info.append(request.form['grad_date'])
-    info.append(request.form['major_name'])
+    info.append(str(request.form['user_name']))
+    info.append(str(request.form['grad_date']))
+    info.append(str(request.form['major_name']))
 
     
     # need number of user to assign new user id
     cursor = g.conn.execute('SELECT count(*) FROM Person')
-    nrows = cursor.fetchone()
+    nrows = cursor.fetchone()[0]
     nUserID = nrows + 1
-    
+
+
 
     if request.method == 'POST':
+        username = (request.form['user_name'])
         universityName = (request.form['univ'])
         companyName = (request.form['company'])
         job = (request.form['job'])
         job_type = (request.form['job_type'])
-    
+        courses = (request.form['courses'])
+        skills = (request.form['skills'])
+
+    print 'username',username
+    print 'universityName',universityName
+    print 'companyName',companyName
+    print 'job',job
+    print 'job_type',job_type
+    print 'courses',courses
+    print 'skills',skills
+    print '--------------------------'
+    print ''
+
     # university id
     universityID = 0
     cursor = g.conn.execute('SELECT * FROM University')
     for u in cursor:
-        if u[1] == universityName:
+        if u[0] == int(universityName):
             universityID = u[0]
+    cursor.close()
+
     # company id
     companyID = 0
+#    print 'companyID {}'.format(companyName)
+#    print 'type {}'.format(type(companyName))
     cursor = g.conn.execute('SELECT * FROM Company')
     for u in cursor:
-        if u[1] == companyName:
+        if u[0] == int(companyName):
             companyID = u[0]
+    cursor.close()
+
     # job id
     jobID = 0
     cursor = g.conn.execute('SELECT * FROM Jobs')
     for u in cursor:
-        if u[1] == job:
+#        print 'u',u
+#        print 'u[1]',u[1]
+        if u[0] == int(job):
             jobID = u[0]
+    cursor.close()
+    
+    # course id
+    courseID = 0
+#    print 'courses',courses
+#    print 'type',type(courses)
+    cursor = g.conn.execute('SELECT * FROM Courses')
+    for u in cursor:
+#        print 'u',u
+#        print 'u[1]',u[1]
+        if str(u[1]) == str(courses):
+#            print 'COURSES TRUE'
+            courseID = u[0]
+    cursor.close()
+
+
+    # skil id
+    skillID = 0
+#    print 'skills',skills
+#    print 'type',type(skills)
+    cursor = g.conn.execute('SELECT * FROM Skills')
+    for u in cursor:
+#        print 'u',u
+#        print 'u[0]',u[0]
+        if u[1] == str(skills):
+            skillID = u[0]
+    cursor.close()
+
 
     # user_id | user_name | grad_date  |       major_name
     g.conn.execute('INSERT INTO Person VALUES (%s,%s,%s,%s)', nUserID, info[0],info[1],info[2])
-    # user_id | company_id | job_id
-    g.conn.execute('INSERT INTO Employed VALUES (%s,%s,%s)', nUserID, companyID)
     # univ_id | user_id | course_id
-    g.conn.execute('INSERT INTO Enrollment VALUES (%s,%s,%s)', universityID, nUserID)
+    g.conn.execute('INSERT INTO Enrollment VALUES (%s,%s,%s)', universityID, nUserID,courseID)
+    # user_id | company_id | job_id
+    g.conn.execute('INSERT INTO Employed VALUES (%s,%s,%s)', nUserID, companyID,jobID)
+#    # skill_id | user_id | endorsements | skill_level
+    g.conn.execute('INSERT INTO Possesses VALUES (%s,%s)', skillID, nUserID)
     return redirect('/')
 
 
