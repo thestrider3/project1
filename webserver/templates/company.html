@@ -1,26 +1,37 @@
-
 <html>
   <style>
     body{ 
-      font-size: 15pt;
+      font-size: 12pt;
       font-family: arial;
     }
   </style>
 
 <body>
-	<h3>Columbia Student Network</h3>
-  
-	Select the Company:  
+<h3>Columbia Student Network</h3>
+<p> <a href="/">View Individual</a>&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/university">List of Universities</a>&thinsp;&thinsp;&thinsp;&thinsp;
+List of Companies&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/adduser">Add New Individual</a>
+</p>  
+  </br><br>
+	Select the Company:  </br></br>
 	<form method="POST" action="/getJobs">
 		<select name="company">
 			{% for out in output %}
     			<option value="{{ out[0]}}">{{ out[1]}}</option>
 			{% endfor %}
-		</select>
+		</select></br>
 		<button type="submit">Submit</button>
 	</form>
 	<div>
 		<table style="width:50%">
+			<caption><b>Job Information</b></caption>
+			<tr>
+  	 			<th>Title</th>
+   				<th>Type</th>
+   				<th>Description</th>
+   				<th>Opening</th>
+ 			</tr>	
 			{% for n in jobs %}
 			<tr>
     				<td>{{n[0]}}</td>
