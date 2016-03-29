@@ -406,8 +406,9 @@ def index():
 # Example of adding new data to the database
 @app.route('/', methods=['POST'])
 def submit():
-    userid = request.form['user_id']
-    print 'userid : {}'.format(userid)
+#    userid = request.form['user_id']
+    username = request.form['user_name']
+#    print 'username : {}'.format(username)
     cursor = g.conn.execute('SELECT * FROM Person')
     userid_list = list()
     person_list = list()
@@ -417,12 +418,20 @@ def submit():
     cursor.close()
 
     user_list = list()
-    cursor = g.conn.execute('SELECT * FROM Person where Person.user_id=%s',userid)
+    userid = ''
+#    cursor = g.conn.execute('SELECT * FROM Person where Person.user_id=%s',userid)
+    cursor = g.conn.execute('SELECT * FROM Person where Person.user_name=%s',username)
     person_list = list()
+    firstP = True
     for person in cursor:
         for p in person:
+            if firstP:
+                userid = p
+                firstP = False
+            
             user_list.append(str(p))
     cursor.close()
+
 
     cursor = g.conn.execute('select c.company_name from company c where c.company_id=(select e.company_id from Employed e where user_id=%s)',userid)
     company = cursor.fetchone()[0]
