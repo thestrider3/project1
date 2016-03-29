@@ -432,7 +432,8 @@ def submit():
             user_list.append(str(p))
     cursor.close()
 
-
+    if userid == '':
+        return render_template("error.html")
     cursor = g.conn.execute('select c.company_name from company c where c.company_id=(select e.company_id from Employed e where user_id=%s)',userid)
     company = cursor.fetchone()[0]
     user_list.append(company)
@@ -459,7 +460,6 @@ def submit():
     if userid in userid_list:
         print 'user list: {}'.format(user_list)
         return render_template("search.html", output=user_list, skills=skill_list)
-#        return render_template("search.html", output=user_list)
     else:
         return render_template("error.html")
 
