@@ -1,18 +1,23 @@
-
 <html>
   <style>
     body{ 
-      font-size: 15pt;
+      font-size: 12pt;
       font-family: arial;
     }
   </style>
 
 
 <body>
- <h3>Columbia Student Network</h3>
+<h3>Columbia Student Network</h3>
+<p> <a href="/">View Individual</a>&thinsp;&thinsp;&thinsp;&thinsp;
+List of Universities&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/company">List of Companies</a>&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/newRecord">Add New Individual</a>
+</p>  
+  </br><br>
   
 Select the University:  
-<form method="POST" action="/getCourses">
+<!-- <form method="POST" action="/getCourses"> -->
 <select name="univ">
 {% for out in output %}
     <option value="{{ out[0]}}">{{ out[1]}}</option>

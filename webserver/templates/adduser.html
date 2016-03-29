@@ -1,0 +1,67 @@
+
+<html>
+  <style>
+    body{ 
+      font-size: 12pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+<h2>Columbia Student Network</h2>
+<p><a href="/">View Student Information</a>&thinsp;&thinsp;&thinsp;&thinsp; 
+<a href="/university">List of Universities</a>&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/company">List of Companies</a>&thinsp;&thinsp;&thinsp;&thinsp;
+Add New Individual
+</p>  
+</br>
+<!-- <form method="POST" action="/newRecord"> -->
+<p>Enter your name: </br>
+<input type="text" name="user_name"></br>
+Enter your Graduation date:</br> 
+<input type="text" name="grad_date"></br>
+Enter your Major: </br>
+<input type="text" name="major_name"></br>
+Enter your University: </br>
+<select name="univ">
+{% for out in university %}
+    <option value="{{ out[0]}}">{{ out[1]}}</option>
+{% endfor %}
+</select></br>
+Select your courses:</br>
+{% for out in courses %}
+  <input type="checkbox" name="courses" value="{{ out[0]}}"> {{ out}}<br>
+  {% endfor %}
+  </br>
+Enter your Company: </br>
+<select name="company">
+{% for out in company %}
+    <option value="{{ out[0]}}">{{ out[1]}}</option>
+{% endfor %}
+</select></br>
+Enter your Job: </br>
+<select name="job">
+{% for out in jobs %}
+    <option value="{{ out[0]}}">{{ out[1]}}</option>
+{% endfor %}
+</select> </br>
+Enter your Job Type: </br>
+<select name="job_type">
+{% for out in job_type %}
+    <option value="{{ out[0]}}">{{ out[1]}}</option>
+{% endfor %}
+</select> </br>
+Select your skills:</br>
+{% for out in skills %}
+  <input type="checkbox" name="skill" value="{{ out[0]}}"> {{ out}}<br>
+  {% endfor %}
+</br>
+<input type="submit" value="Submit"></p>
+</form>
+
+
+</body>
+
+
+</html>

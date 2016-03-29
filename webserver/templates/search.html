@@ -1,26 +1,31 @@
 <html>
   <style>
     body{ 
-      font-size: 15pt;
+      font-size: 12pt;
       font-family: arial;
     }
   </style>
 
 
 <body>
- <h3>Columbia Student Network</h3>
-  
+<h2>Columbia Student Network</h2>
+<p><a href="/">View Student Information</a>&thinsp;&thinsp;&thinsp;&thinsp; 
+<a href="/university">List of Universities</a>&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/company">List of Companies</a>&thinsp;&thinsp;&thinsp;&thinsp;
+<a href="/newRecord">Add New Individual</a>
+</p>  
+</br>
   
 <div>
     
-    <div>User id:{{output[0]}}</div><br>
-    <div>Name:{{output[1]}}</div><br>
-    <div>Graduation Date:{{output[2]}}</div><br>
-    <div>Major:{{output[3]}}</div><br>
-    <div>Company:{{output[4]}}</div><br>
-    <div>Job:{{output[5]}}</div><br>
-    <div>Job Type:{{output[6]}}</div><br>
-    <h5>Skills</h5>
+    <div><!--<b>User id</b>:   {{output[0]}}</div><br>-->
+    <div><b>Name</b>:  {{output[1]}}</div><br>
+    <div><b>Graduation Date</b>: {{output[2]}}</div><br>
+    <div><b>Major</b>:  {{output[3]}}</div><br>
+    <div><b>Company</b>: {{output[4]}}</div><br>
+    <div><b>Job</b>:  {{output[5]}}</div><br>
+    <div><b>Job Type</b>:  {{output[6]}}</div><br>
+    <h4>Skills</h4>
     <div>
     {% for n in skills %}
     <div>{{n}}</div>
@@ -34,5 +39,3 @@
 
 
 </html>
-
-

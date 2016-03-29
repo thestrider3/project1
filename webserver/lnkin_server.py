@@ -64,7 +64,7 @@ def teardown_request(exception):
 #
 #person_values = [('1','Jorge','2016-12-05','Computer Science'),
 #                 ('2','Tulika','2016-12-05','Computer Science'),
-#                 ('3','Laura','2015-08-15','Computer Science'),
+#                 ('3','Laura','2015-08-15','Biotechnology'),
 #                 ('4','Evan','2017-05-20','Computer Science'),
 #                 ('5','John','2014-05-21','Computer Science'),
 #                 ('6','Michael','2018-12-7','Computer Science'),
@@ -536,6 +536,96 @@ def getJobs():
         
         return render_template("company.html", output=company_list, jobs=vacant_jobs_list)
     else: return render_template("error.html")
+
+@app.route('/adduser')
+def adduser():
+    
+    cursor = g.conn.execute('SELECT * FROM Company')
+    companyname_list = list()
+    companyname_list.append([-1,'Select Company'])
+    for result in cursor:
+        companyname_list.append(result)
+    
+    cursor = g.conn.execute('SELECT * FROM University')
+    univname_list = list()
+    univname_list.append([-1,'Select University'])
+    for result in cursor:
+        univname_list.append(result)
+
+    cursor = g.conn.execute('SELECT * FROM Jobs')
+    job_list = list()
+    jobtype_list = list()
+    tmp_list = list()
+    job_list.append([-1,'Select Job'])
+    indexj = 0
+    for result in cursor:
+        tmpj = [result[0],str(result[1])]
+        job_list.append(tmpj)
+
+    jobtype_list.append([-1,'Select Job Type'])
+    jobtype_list.append([0,'Intern'])
+    jobtype_list.append([1,'Part Time'])
+    jobtype_list.append([2,'Full Time'])
+
+    cursor = g.conn.execute('SELECT C.course_name FROM Courses C')
+    courses_list = list()
+    for result in cursor:
+        courses_list.append(str(result[0]))
+
+    cursor = g.conn.execute('SELECT S.skill_name FROM Skills S')
+    skills_list = list()
+    for result in cursor:
+        skills_list.append(str(result[0]))
+
+    return render_template("adduser.html",company=companyname_list,university=univname_list,jobs=job_list,job_type=jobtype_list,courses=courses_list,skills=skills_list)
+
+@app.route('/newRecord', methods=['GET','POST'])
+def newRecord():
+    info = list()
+    info.append(request.form['user_name'])
+    info.append(request.form['grad_date'])
+    info.append(request.form['major_name'])
+
+    
+    # need number of user to assign new user id
+    cursor = g.conn.execute('SELECT count(*) FROM Person')
+    nrows = cursor.fetchone()
+    nUserID = nrows + 1
+    
+
+    if request.method == 'POST':
+        universityName = (request.form['univ'])
+        companyName = (request.form['company'])
+        job = (request.form['job'])
+        job_type = (request.form['job_type'])
+    
+    # university id
+    universityID = 0
+    cursor = g.conn.execute('SELECT * FROM University')
+    for u in cursor:
+        if u[1] == universityName:
+            universityID = u[0]
+    # company id
+    companyID = 0
+    cursor = g.conn.execute('SELECT * FROM Company')
+    for u in cursor:
+        if u[1] == companyName:
+            companyID = u[0]
+    # job id
+    jobID = 0
+    cursor = g.conn.execute('SELECT * FROM Jobs')
+    for u in cursor:
+        if u[1] == job:
+            jobID = u[0]
+
+    # user_id | user_name | grad_date  |       major_name
+    g.conn.execute('INSERT INTO Person VALUES (%s,%s,%s,%s)', nUserID, info[0],info[1],info[2])
+    # user_id | company_id | job_id
+    g.conn.execute('INSERT INTO Employed VALUES (%s,%s,%s)', nUserID, companyID)
+    # univ_id | user_id | course_id
+    g.conn.execute('INSERT INTO Enrollment VALUES (%s,%s,%s)', universityID, nUserID)
+    return redirect('/')
+
 
 if __name__ == "__main__":
     import click
